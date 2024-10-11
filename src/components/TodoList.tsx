@@ -2,7 +2,7 @@ import React from "react";
 import { FilterType } from "../utils/typeDeclaration";
 import { useTasks } from "../contextApi/ContextForStore";
 
-const TaskList = ({ filter, searchTerm }: { filter: FilterType; searchTerm: string }) => {
+const TodoList = ({ filter, searchTerm }: { filter: FilterType; searchTerm: string }) => {
   const context = useTasks();
   if (!context) throw new Error('TaskContext must be used within TaskProvider');
   const { tasks, toggleTask, deleteTask } = context;
@@ -20,18 +20,18 @@ const TaskList = ({ filter, searchTerm }: { filter: FilterType; searchTerm: stri
 
   if (filteredTasks.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center py-8 text-gray-500 my-16 rounded-md border border-red-200 border-dashed ">
         No tasks found
       </div>
     );
   }
 
   return (
-    <div className="space-y-2 mt-4">
+    <div className="space-y-4 mt-16">
       {filteredTasks.map(task => (
         <div
           key={task.id}
-          className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg"
+          className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"
         >
           <input
             type="checkbox"
@@ -56,4 +56,4 @@ const TaskList = ({ filter, searchTerm }: { filter: FilterType; searchTerm: stri
   );
 };
 
-export default TaskList
+export default TodoList

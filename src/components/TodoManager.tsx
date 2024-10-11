@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import { FilterType } from "../utils/typeDeclaration";
 import useDebounce from "../customHook/useDebounce";
-import TaskControls from "./TaskControls";
-import TaskList from "./TaskList";
+import TodoControls from "./TodoControls";
 import AddTask from "./AddTask";
-const TaskManager = () => {
+import TodoList from "./TodoList";
+const TodoManager = () => {
   const [newTask, setNewTask] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearch = useDebounce(searchTerm, 300);
+  const debouncedSearch = useDebounce(searchTerm, 500);
 
   return (
-    <div className="max-w-[1200px] w-11/12 m-auto my-16">
-      <TaskControls
+    <div className="max-w-[1000px] w-[95%] md:w-full m-auto my-16">
+      <TodoControls
         filter={filter}
         setFilter={setFilter}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
       />
-      <TaskList filter={filter} searchTerm={debouncedSearch} />
+      <TodoList filter={filter} searchTerm={debouncedSearch} />
       <AddTask newTask={newTask} setNewTask={setNewTask} />
     </div>
   );
 };
 
-export default TaskManager;
+export default TodoManager;

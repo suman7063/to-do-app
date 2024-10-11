@@ -2,13 +2,12 @@ import React from "react";
 import { FilterType } from "../utils/typeDeclaration";
 import { useTasks } from "../contextApi/ContextForStore";
 import SearchIcon from "../icons/SearchIcon";
-import PlusIcon from "../icons/PlusIcon";
 import RedoIcon from "../icons/RedoIcon";
 import UndoIcon from "../icons/UndoIcon";
 
 const filterItem: FilterType[] = ["all", "completed", "incomplete"];
 
-const TaskControls = ({
+const TodoControls = ({
   filter,
   setFilter,
   searchTerm,
@@ -27,8 +26,8 @@ const TaskControls = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex">
-        <div className="relative max-w-[1000px] w-full h-[40px]">
+      <div className="md:flex justify-between">
+        <div className="relative md:max-w-[500px] w-full h-[40px]">
           <SearchIcon />
           <input
             type="text"
@@ -38,7 +37,7 @@ const TaskControls = ({
             className="w-full rounded-[100px] border border-gray-200 pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="flex flex-wrap gap-2 items-center justify-between">
+        <div className="flex flex-wrap gap-2 items-center justify-between mt-4 md:mt-0">
           <div className="flex gap-2">
             {filterItem.map((filterType) => (
               <button
@@ -75,4 +74,4 @@ const TaskControls = ({
   );
 };
 
-export default TaskControls;
+export default TodoControls;

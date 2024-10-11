@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
 import { TaskProvider } from './contextApi/ContextForStore';
-import TaskManager from './components/TaskManager';
+import TodoManager from './components/TodoManager';
 
 function App() {
   return (
     <TaskProvider>
-      <TaskManager/>
+      <TodoManager/>
     </TaskProvider>
   );
 }
