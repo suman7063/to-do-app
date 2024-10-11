@@ -1,19 +1,26 @@
 import React from "react";
 import { FilterType } from "../utils/typeDeclaration";
 import { useTasks } from "../contextApi/ContextForStore";
+import GreenCheckIcon from "../icons/GreenCheckIcon";
 
-const TodoList = ({ filter, searchTerm }: { filter: FilterType; searchTerm: string }) => {
+const TodoList = ({
+  filter,
+  searchTerm,
+}: {
+  filter: FilterType;
+  searchTerm: string;
+}) => {
   const context = useTasks();
-  if (!context) throw new Error('TaskContext must be used within TaskProvider');
+  if (!context) throw new Error("TaskContext must be used within TaskProvider");
   const { tasks, toggleTask, deleteTask } = context;
 
   const filteredTasks = tasks
-    .filter(task => {
-      if (filter === 'completed') return task.completed;
-      if (filter === 'incomplete') return !task.completed;
+    .filter((task) => {
+      if (filter === "completed") return task.completed;
+      if (filter === "incomplete") return !task.completed;
       return true;
     })
-    .filter(task =>
+    .filter((task) =>
       task.text.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => b.timestamp - a.timestamp);
@@ -28,26 +35,52 @@ const TodoList = ({ filter, searchTerm }: { filter: FilterType; searchTerm: stri
 
   return (
     <div className="space-y-4 mt-16">
-      {filteredTasks.map(task => (
+      {filteredTasks.map((task) => (
         <div
           key={task.id}
-          className={`flex items-center gap-4 p-4 ${task.completed ?'bg-green-200':'bg-gray-50'} rounded-lg`}
+          className={`flex items-center gap-4 p-4 border-2 ${
+            task.completed
+              ? "bg-green-100 border-green-300"
+              : "bg-gray-50  border-gray-300 "
+          } rounded-lg`}
         >
-          <input
-            type="checkbox"
-            checked={task.completed}
-            onChange={() => toggleTask(task.id)}
-            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-          />
-          <span className={`flex-grow ${task.completed ? 'line-through text-gray-500' : ''}`}>
+          {task.completed ? (
+            <div
+              className="w-5 h-5 border-2 border-green-300 rounded-full"
+              onClick={() => toggleTask(task.id)}
+            >
+               <GreenCheckIcon />
+            </div>
+          ) : (
+            <div
+              className="w-5 h-5 border-2 border-gray-300 rounded-full"
+              onClick={() => toggleTask(task.id)}
+            />
+          )}
+
+          <span
+            className={`flex-grow ${
+              task.completed ? "line-through text-gray-500" : ""
+            }`}
+          >
             {task.text}
           </span>
           <button
             onClick={() => deleteTask(task.id)}
             className="p-1 text-red-500 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 rounded-md"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -56,4 +89,4 @@ const TodoList = ({ filter, searchTerm }: { filter: FilterType; searchTerm: stri
   );
 };
 
-export default TodoList
+export default TodoList;

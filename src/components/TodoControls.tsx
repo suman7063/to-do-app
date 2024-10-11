@@ -29,7 +29,7 @@ const TodoControls = ({
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search tasks..."
+            placeholder="Search Tasks By Title..."
             className="w-full rounded-[100px] border border-gray-200 pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -39,9 +39,9 @@ const TodoControls = ({
               <button
                 key={filterType}
                 onClick={() => setFilter(filterType)}
-                className={`px-4 py-2 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                className={`px-4 py-2 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 ${
                   filter === filterType
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    ? "bg-green-600 text-white hover:bg-green-700"
                     : "bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-50"
                 }`}
               >
