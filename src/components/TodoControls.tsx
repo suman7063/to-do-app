@@ -1,6 +1,6 @@
 import React from "react";
 import { FilterType } from "../utils/typeDeclaration";
-import { useTasks } from "../contextApi/ContextForStore";
+import { useTodoContext } from "../contextApi/ContextForStore";
 import SearchIcon from "../icons/SearchIcon";
 import RedoIcon from "../icons/RedoIcon";
 import UndoIcon from "../icons/UndoIcon";
@@ -18,7 +18,7 @@ const TodoControls = ({
   searchTerm: string;
   setSearchTerm: (value: string) => void;
 }) => {
-  const { undo, redo, canUndo, canRedo } =  useTasks();
+  const { undo, redo, undoStatus, redoStatus } = useTodoContext();
 
   return (
     <div className="space-y-4">
@@ -29,7 +29,7 @@ const TodoControls = ({
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search Tasks By Title..."
+            placeholder="Search Todo By Title..."
             className="w-full rounded-[100px] border border-gray-200 pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -53,17 +53,17 @@ const TodoControls = ({
           <div className="flex gap-2">
             <button
               onClick={undo}
-              disabled={!canUndo}
+              disabled={!undoStatus}
               className={`p-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-        ${canUndo ? "hover:bg-gray-50" : "opacity-50 cursor-not-allowed"}`}
+        ${undoStatus ? "hover:bg-gray-50" : "opacity-50 cursor-not-allowed"}`}
             >
               <UndoIcon />
             </button>
             <button
               onClick={redo}
-              disabled={!canRedo}
+              disabled={!redoStatus}
               className={`p-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-        ${canRedo ? "hover:bg-gray-50" : "opacity-50 cursor-not-allowed"}`}
+        ${redoStatus ? "hover:bg-gray-50" : "opacity-50 cursor-not-allowed"}`}
             >
               <RedoIcon />
             </button>

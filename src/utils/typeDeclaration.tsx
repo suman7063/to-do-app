@@ -1,5 +1,5 @@
 
-export type Task = {
+export type Todo = {
   id: string;
   text: string;
   completed: boolean;
@@ -8,13 +8,13 @@ export type Task = {
 
 export type FilterType = 'all' | 'completed' | 'incomplete';
 
-export type TaskContextType = {
-  tasks: Task[];
-  addTask: (text: string) => void;
-  toggleTask: (id: string) => void;
-  deleteTask: (id: string) => void;
+export type TodoContextType = {
+  todo: Todo[];
+  addTodo: (text: string) => void;
+  toggleTodo: (id: string) => void;
+  deleteTodo: (id: string) => void;
   undo: () => void;
   redo: () => void;
-  canUndo: boolean;
-  canRedo: boolean;
+  undoStatus: boolean;
+  redoStatus: boolean;
 };

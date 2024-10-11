@@ -5,104 +5,101 @@ import {
   createContext,
   useCallback,
 } from "react";
-import { Task, TaskContextType } from "../utils/typeDeclaration";
+import { Todo, TodoContextType } from "../utils/typeDeclaration";
 
-// create Context
-const TaskContext = createContext<TaskContextType | undefined>(undefined);
+const TodoContext = createContext<TodoContextType | undefined>(undefined);
 
-// Provider
-export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    const saved = localStorage.getItem("tasks");
+export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
+  const [todo, setTodo] = useState<Todo[]>(() => {
+    const saved = localStorage.getItem("todos");
     return saved ? JSON.parse(saved) : [];
   });
-  const [history, setHistory] = useState<Task[][]>([]);
+  const [history, setHistory] = useState<Todo[][]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+    localStorage.setItem("todos", JSON.stringify(todo));
+  }, [todo]);
 
-  // Save tasks to history
   const saveToHistory = useCallback(
-    (newTasks: Task[]) => {
-      setHistory((prev) => [...prev.slice(0, historyIndex + 1), newTasks]);
+    (newTodo: Todo[]) => {
+      setHistory((prev) => [...prev.slice(0, historyIndex + 1), newTodo]);
       setHistoryIndex((prev) => prev + 1);
     },
     [historyIndex]
   );
 
-  const addTask = useCallback(
+  const addTodo = useCallback(
     (text: string) => {
-      const newTask: Task = {
+      const newTodo: Todo = {
         id: Date.now().toString(),
         text,
         completed: false,
         timestamp: Date.now(),
       };
-      const newTasks = [...tasks, newTask];
-      setTasks(newTasks);
-      saveToHistory(newTasks);
+      const newTodos = [...todo, newTodo];
+      setTodo(newTodos);
+      saveToHistory(newTodos);
     },
-    [tasks, saveToHistory]
+    [todo, saveToHistory]
   );
 
-  const toggleTask = useCallback(
+  const toggleTodo = useCallback(
     (id: string) => {
-      const newTasks = tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
+      const newTodo = todo.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
       );
-      setTasks(newTasks);
-      saveToHistory(newTasks);
+      setTodo(newTodo);
+      saveToHistory(newTodo);
     },
-    [tasks, saveToHistory]
+    [todo, saveToHistory]
   );
 
-  const deleteTask = useCallback(
+  const deleteTodo = useCallback(
     (id: string) => {
-      const newTasks = tasks.filter((task) => task.id !== id);
-      setTasks(newTasks);
-      saveToHistory(newTasks);
+      const newTodo = todo.filter((todo) => todo.id !== id);
+      setTodo(newTodo);
+      saveToHistory(newTodo);
     },
-    [tasks, saveToHistory]
+    [todo, saveToHistory]
   );
 
   const undo = useCallback(() => {
     if (historyIndex > 0) {
       setHistoryIndex((prev) => prev - 1);
-      setTasks(history[historyIndex - 1]);
+      setTodo(history[historyIndex - 1]);
     }
   }, [history, historyIndex]);
 
   const redo = useCallback(() => {
     if (historyIndex < history.length - 1) {
       setHistoryIndex((prev) => prev + 1);
-      setTasks(history[historyIndex + 1]);
+      setTodo(history[historyIndex + 1]);
     }
   }, [history, historyIndex]);
 
   return (
-    <TaskContext.Provider
+    <TodoContext.Provider
       value={{
-        tasks,
-        addTask,
-        toggleTask,
-        deleteTask,
+        todo,
+        addTodo,
+        toggleTodo,
+        deleteTodo,
         undo,
         redo,
-        canUndo: historyIndex > 0,
-        canRedo: historyIndex < history.length - 1,
+        undoStatus: historyIndex > 0,
+        redoStatus: historyIndex < history.length - 1,
       }}
     >
       {children}
-    </TaskContext.Provider>
+    </TodoContext.Provider>
   );
 };
 
-export const useTasks = () => {
-  const context = useContext(TaskContext);
+export const useTodoContext = () => {
+  const context = useContext(TodoContext);
   if (!context) {
-    throw new Error("useTasks must be used within a TaskProvider");
+    throw new Error("useTodoContext must be used within a TodoProvider");
   }
   return context;
 };

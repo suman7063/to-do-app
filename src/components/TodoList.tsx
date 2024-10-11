@@ -1,6 +1,6 @@
 import React from "react";
 import { FilterType } from "../utils/typeDeclaration";
-import { useTasks } from "../contextApi/ContextForStore";
+import { useTodoContext } from "../contextApi/ContextForStore";
 import GreenCheckIcon from "../icons/GreenCheckIcon";
 
 const TodoList = ({
@@ -10,63 +10,61 @@ const TodoList = ({
   filter: FilterType;
   searchTerm: string;
 }) => {
-  const context = useTasks();
-  if (!context) throw new Error("TaskContext must be used within TaskProvider");
-  const { tasks, toggleTask, deleteTask } = context;
+  const { todo, toggleTodo, deleteTodo } = useTodoContext();
 
-  const filteredTasks = tasks
-    .filter((task) => {
-      if (filter === "completed") return task.completed;
-      if (filter === "incomplete") return !task.completed;
+  const filteredTodo = todo
+    .filter((todo) => {
+      if (filter === "completed") return todo.completed;
+      if (filter === "incomplete") return !todo.completed;
       return true;
     })
-    .filter((task) =>
-      task.text.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter((todo) =>
+      todo.text.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => b.timestamp - a.timestamp);
 
-  if (filteredTasks.length === 0) {
+  if (filteredTodo.length === 0) {
     return (
       <div className="text-center py-8 text-gray-500 my-16 rounded-md border border-red-200 border-dashed ">
-        No tasks found
+        No Item found
       </div>
     );
   }
 
   return (
     <div className="space-y-4 mt-16">
-      {filteredTasks.map((task) => (
+      {filteredTodo.map((todo) => (
         <div
-          key={task.id}
+          key={todo.id}
           className={`flex items-center gap-4 p-4 border-2 ${
-            task.completed
+            todo.completed
               ? "bg-green-100 border-green-300"
               : "bg-gray-50  border-gray-300 "
           } rounded-lg`}
         >
-          {task.completed ? (
+          {todo.completed ? (
             <div
               className="w-5 h-5 border-2 border-green-300 rounded-full"
-              onClick={() => toggleTask(task.id)}
+              onClick={() => toggleTodo(todo.id)}
             >
                <GreenCheckIcon />
             </div>
           ) : (
             <div
               className="w-5 h-5 border-2 border-gray-300 rounded-full"
-              onClick={() => toggleTask(task.id)}
+              onClick={() => toggleTodo(todo.id)}
             />
           )}
 
           <span
             className={`flex-grow ${
-              task.completed ? "line-through text-gray-500" : ""
+              todo.completed ? "line-through text-gray-500" : ""
             }`}
           >
-            {task.text}
+            {todo.text}
           </span>
           <button
-            onClick={() => deleteTask(task.id)}
+            onClick={() => deleteTodo(todo.id)}
             className="p-1 text-red-500 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 rounded-md"
           >
             <svg
