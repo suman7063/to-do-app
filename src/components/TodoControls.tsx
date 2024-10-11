@@ -20,9 +20,7 @@ const TodoControls = ({
 }) => {
   const context = useTasks();
   if (!context) throw new Error("TaskContext must be used within TaskProvider");
-  const {undo, redo } = context;
-
-
+  const { undo, redo, canUndo, canRedo } = context;
 
   return (
     <div className="space-y-4">
@@ -57,13 +55,17 @@ const TodoControls = ({
           <div className="flex gap-2">
             <button
               onClick={undo}
-              className="p-2 text-gray-700 bg-white border border-gray-200 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={!canUndo} // Enable/disable based on canUndo
+              className={`p-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+        ${canUndo ? "hover:bg-gray-50" : "opacity-50 cursor-not-allowed"}`}
             >
-             <UndoIcon/>
+              <UndoIcon />
             </button>
             <button
               onClick={redo}
-              className="p-2 text-gray-700 bg-white border border-gray-200 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={!canRedo} // Enable/disable based on canRedo
+              className={`p-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+        ${canRedo ? "hover:bg-gray-50" : "opacity-50 cursor-not-allowed"}`}
             >
               <RedoIcon />
             </button>

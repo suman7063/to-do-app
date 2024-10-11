@@ -15,4 +15,6 @@ export type TaskContextType = {
   deleteTask: (id: string) => void;
   undo: () => void;
   redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 };
