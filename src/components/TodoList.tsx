@@ -31,7 +31,7 @@ const TodoList = ({ filter, searchTerm }: { filter: FilterType; searchTerm: stri
       {filteredTasks.map(task => (
         <div
           key={task.id}
-          className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"
+          className={`flex items-center gap-4 p-4 ${task.completed ?'bg-green-200':'bg-gray-50'} rounded-lg`}
         >
           <input
             type="checkbox"
